@@ -31,6 +31,7 @@ export async function stitchClips(inputs: string[], outputPath: string): Promise
     '-filter_complex', filterComplex,
     '-map', '[outv]',
     '-c:v', 'libx264', '-crf', '14', '-preset', 'slow',
+    '-profile:v', 'high', '-level', '4.2',
     '-pix_fmt', 'yuv420p', '-r', '60',
     outputPath,
   );

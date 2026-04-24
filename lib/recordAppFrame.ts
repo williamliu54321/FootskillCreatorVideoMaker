@@ -113,6 +113,7 @@ export async function recordAppFrame(
       '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', clipDuration.toFixed(3),
       '-c:v', 'libx264', '-crf', '14', '-preset', 'slow',
+      '-profile:v', 'high', '-level', '4.2',
       '-pix_fmt', 'yuv420p', '-r', '60',
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
