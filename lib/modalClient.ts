@@ -4,7 +4,7 @@ const MODAL_BASE = process.env.MODAL_BASE || 'https://wliu404--ball-trail-v2-web
 
 export async function runBallTrail(videoBuffer: Buffer, contentType: string, filename: string): Promise<Buffer> {
   const form = new FormData();
-  const blob = new Blob([videoBuffer], { type: contentType || 'video/mp4' });
+  const blob = new Blob([new Uint8Array(videoBuffer)], { type: contentType || 'video/mp4' });
   form.append('video', blob, filename || 'input.mp4');
 
   const processRes = await fetch(`${MODAL_BASE}/process`, {
