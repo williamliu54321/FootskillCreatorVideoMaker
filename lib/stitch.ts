@@ -33,6 +33,8 @@ export async function stitchClips(inputs: string[], outputPath: string): Promise
     '-c:v', 'libx264', '-crf', '14', '-preset', 'slow',
     '-profile:v', 'high', '-level', '4.2',
     '-pix_fmt', 'yuv420p', '-r', '60',
+    '-g', '60', '-keyint_min', '60', '-sc_threshold', '0',
+    '-movflags', '+faststart',
     outputPath,
   );
 
