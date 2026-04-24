@@ -71,8 +71,8 @@
 
   /* ========= HEADER (REC pill + brand + help) ========= */
   .header {
-    position: absolute; top: 130px; left: 0; right: 0; height: 110px;
-    display: flex; align-items: center; justify-content: space-between;
+    position: absolute; top: 80px; left: 0; right: 0; height: 110px;
+    display: flex; align-items: center; justify-content: center;
     padding: 0 50px; z-index: 20;
   }
 
@@ -183,70 +183,18 @@
   <video id="content" autoplay muted playsinline></video>
   <div class="vignette"></div>
 
-  <!-- Status bar -->
-  <div class="status-bar">
-    <span>9:41</span>
-    <div class="status-icons">
-      <svg width="48" height="28" viewBox="0 0 48 28">
-        <rect x="0"  y="18" width="8" height="10" rx="1" fill="#fff"/>
-        <rect x="12" y="13" width="8" height="15" rx="1" fill="#fff"/>
-        <rect x="24" y="7"  width="8" height="21" rx="1" fill="#fff"/>
-        <rect x="36" y="0"  width="8" height="28" rx="1" fill="#fff"/>
-      </svg>
-      <svg width="44" height="30" viewBox="0 0 44 30" fill="none">
-        <path d="M12 18 Q22 10 32 18" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <path d="M4 10 Q22 -6 40 10" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
-        <circle cx="22" cy="25" r="3" fill="#fff"/>
-      </svg>
-      <div class="battery">
-        <div class="battery-fill"></div>
-        <div class="battery-tip"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Header row -->
+  <!-- Brand pill (top) -->
   <div class="header">
-    <div class="rec-pill">
-      <div class="rec-dot"></div>
-      <span class="rec-time" id="rec-time">00:00</span>
-    </div>
     <div class="brand-pill">
       <div class="brand-diamond"></div>
       <span class="brand-text">FOOTSKILL AI</span>
     </div>
-    <div style="width: 60px;"></div>
   </div>
-
-  <!-- Rounded frame overlay (drawn on top of full-HD video) -->
-  <div class="frame-overlay"></div>
-
-  <!-- Viewfinder corners inside the frame -->
-  <div class="corner tl"></div>
-  <div class="corner tr"></div>
-  <div class="corner bl"></div>
-  <div class="corner br"></div>
-
 
   <!-- Bottom analyze bar -->
   <div class="analyze-bar">
     <div class="spin-dot"></div>
     <span class="analyze-text">ANALYZING</span>
   </div>
-
-  <div class="home-indicator"></div>
-
-  <script>
-    const video = document.getElementById('content');
-    const label = document.getElementById('rec-time');
-    function fmt(t) {
-      const mm = String(Math.floor(t / 60)).padStart(2, '0');
-      const ss = String(Math.floor(t % 60)).padStart(2, '0');
-      return mm + ':' + ss;
-    }
-    video.addEventListener('timeupdate', () => {
-      label.textContent = fmt(video.currentTime);
-    });
-  </script>
 </body>
 </html>
