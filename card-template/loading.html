@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FootSkill AI — Loading</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 1080px; height: 1920px;
+    background: linear-gradient(180deg, #000 0%, #0a1525 50%, #000 100%);
+    color: #fff; overflow: hidden;
+  }
+
+  body {
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  @keyframes fsSpin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  @keyframes fsPulseBg {
+    0%, 100% { box-shadow: 0 0 120px rgba(0,136,255,0.3), 0 0 240px rgba(0,212,255,0.15); }
+    50%      { box-shadow: 0 0 200px rgba(0,136,255,0.55), 0 0 400px rgba(0,212,255,0.3); }
+  }
+  @keyframes fsOrbit1 {
+    from { transform: rotate(0deg) translateX(240px) rotate(0deg); }
+    to   { transform: rotate(360deg) translateX(240px) rotate(-360deg); }
+  }
+  @keyframes fsOrbit2 {
+    from { transform: rotate(120deg) translateX(240px) rotate(-120deg); }
+    to   { transform: rotate(480deg) translateX(240px) rotate(-480deg); }
+  }
+  @keyframes fsOrbit3 {
+    from { transform: rotate(240deg) translateX(240px) rotate(-240deg); }
+    to   { transform: rotate(600deg) translateX(240px) rotate(-600deg); }
+  }
+  @keyframes fsTitleGlow {
+    0%, 100% { text-shadow: 0 0 40px rgba(0,212,255,0.5), 0 0 80px rgba(0,136,255,0.3); }
+    50%      { text-shadow: 0 0 60px rgba(0,212,255,0.9), 0 0 120px rgba(0,136,255,0.5); }
+  }
+  @keyframes fsDiamondFloat {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50%      { transform: rotate(45deg) translateY(-10px); }
+  }
+  /* Bar fills 0 -> 100% across the full 0.5 second clip */
+  @keyframes fsBarFill {
+    from { width: 0%; }
+    to   { width: 100%; }
+  }
+  @keyframes fsScanLine {
+    from { transform: translateY(-100%); }
+    to   { transform: translateY(100%); }
+  }
+
+  .panel {
+    position: relative;
+    display: flex; flex-direction: column; align-items: center; gap: 60px;
+    padding: 80px 100px; border-radius: 40px;
+    background: rgba(0,20,40,0.55);
+    border: 2px solid rgba(0,136,255,0.3);
+    animation: fsPulseBg 2s ease-in-out infinite;
+    min-width: 780px;
+  }
+
+  .panel::before {
+    content: ''; position: absolute; inset: 0; border-radius: 40px;
+    overflow: hidden; pointer-events: none;
+  }
+
+  .scan {
+    position: absolute; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+    animation: fsScanLine 1.2s ease-in-out infinite;
+  }
+
+  .ring-wrap {
+    position: relative; width: 520px; height: 520px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .ring-outer {
+    position: absolute; animation: fsSpin 2s linear infinite;
+    filter: drop-shadow(0 0 16px rgba(0,212,255,0.6));
+  }
+
+  .ring-inner {
+    position: absolute; animation: fsSpin 3s linear infinite reverse;
+    opacity: 0.6;
+  }
+
+  .orbit-dot {
+    position: absolute; width: 28px; height: 28px; border-radius: 50%;
+    background: #00d4ff;
+    box-shadow: 0 0 30px #00d4ff, 0 0 60px #0088ff;
+    left: -14px; top: -14px;
+    transform-origin: center;
+  }
+  .orbit-dot.d1 { animation: fsOrbit1 1.3s linear infinite; }
+  .orbit-dot.d2 { animation: fsOrbit2 1.3s linear infinite; }
+  .orbit-dot.d3 { animation: fsOrbit3 1.3s linear infinite; }
+
+  .diamond {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #00d4ff, #0066cc);
+    box-shadow: 0 0 40px #00d4ff, 0 0 80px #0088ff;
+    animation: fsDiamondFloat 1.5s ease-in-out infinite;
+  }
+
+  .title {
+    font-family: 'Orbitron', monospace;
+    font-size: 64px; letter-spacing: 10px; font-weight: 900;
+    background: linear-gradient(180deg, #fff 0%, #00d4ff 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: fsTitleGlow 1.5s ease-in-out infinite;
+  }
+
+  .subtitle {
+    margin-top: 14px; font-size: 28px; letter-spacing: 6px;
+    color: rgba(255,255,255,0.6);
+    font-family: 'Orbitron', monospace;
+    text-align: center;
+  }
+
+  .bar-wrap {
+    width: 560px; height: 8px; border-radius: 4px;
+    background: rgba(0,136,255,0.15);
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0066cc, #00d4ff, #0088ff);
+    border-radius: 4px;
+    box-shadow: 0 0 16px rgba(0,212,255,0.7);
+    animation: fsBarFill 0.5s linear forwards;
+  }
+</style>
+</head>
+<body>
+  <div class="panel">
+    <div class="scan"></div>
+
+    <div class="ring-wrap">
+      <svg class="ring-outer" width="520" height="520">
+        <circle cx="260" cy="260" r="240" fill="none"
+                stroke="url(#g1)" stroke-width="4"
+                stroke-dasharray="120 40 80 60 160 80"
+                stroke-linecap="round"/>
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0066cc"/>
+            <stop offset="50%" stop-color="#00d4ff"/>
+            <stop offset="100%" stop-color="#0088ff"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <svg class="ring-inner" width="440" height="440">
+        <circle cx="220" cy="220" r="200" fill="none"
+                stroke="#0088ff" stroke-width="2"
+                stroke-dasharray="8 16"/>
+      </svg>
+
+      <div style="position:absolute; width:0; height:0;">
+        <div class="orbit-dot d1"></div>
+        <div class="orbit-dot d2"></div>
+        <div class="orbit-dot d3"></div>
+      </div>
+
+      <div class="diamond"></div>
+    </div>
+
+    <div style="text-align:center;">
+      <div class="title">FOOTSKILL AI</div>
+      <div class="subtitle">ANALYZING</div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-fill"></div>
+    </div>
+  </div>
+</body>
+</html>
