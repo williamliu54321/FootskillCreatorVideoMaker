@@ -7,10 +7,10 @@ function runFfmpeg(args: string[]): Promise<void> {
     const proc = spawn('ffmpeg', args);
     let stderr = '';
     proc.stderr.on('data', (d) => { stderr += d.toString(); });
-    proc.on('error', reject);
-    proc.on('close', (code) => {
-      if (code === 0) resolve();
-      else reject(new Error(`ffmpeg exited ${code}\n${stderr.slice(-4000)}`));
+    proc.on('error', (err) => reject(new Error(`ffmpeg spawn error: ${err.message}`)));
+    proc.on('close', (code, signal) => {
+      if (code === 0) return resolve();
+      reject(new Error(`ffmpeg exit code=${code} signal=${signal}\nSTDERR:\n${stderr.slice(-8000)}`));
     });
   });
 }
@@ -28,7 +28,7 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
   // input codec/container. Avoids stream-copy artifacts like missing
   // keyframes that break downstream decoders (Modal/SAM 3).
   await runFfmpeg([
-    '-y', '-loglevel', 'warning',
+    '-y', '-loglevel', 'info',
     '-ss', s.toFixed(3),
     '-i', inputPath,
     '-t', duration.toFixed(3),
