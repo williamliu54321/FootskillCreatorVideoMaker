@@ -102,7 +102,7 @@ export async function recordAppFrame(
       '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', clipDuration.toFixed(3),
       '-c:v', 'libx264', '-crf', '0', '-preset', 'slow',
-      '-pix_fmt', 'yuv420p', '-r', '60',
+      '-pix_fmt', 'yuv444p', '-r', '60',
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
     await execFileP('rm', ['-f', rawPath]);

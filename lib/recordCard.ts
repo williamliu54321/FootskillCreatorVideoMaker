@@ -122,7 +122,7 @@ export async function recordCard(outputPath: string): Promise<void> {
       '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', '2.25',
       '-c:v', 'libx264', '-crf', '0', '-preset', 'slow',
-      '-pix_fmt', 'yuv420p', '-r', '60',
+      '-pix_fmt', 'yuv444p', '-r', '60',
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
 

@@ -18,12 +18,12 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
   // input codec/container. Avoids stream-copy artifacts like missing
   // keyframes that break downstream decoders (Modal/SAM 3).
   await execFileP('ffmpeg', [
-    '-y', '-loglevel', 'error',
+    '-y', '-loglevel', 'warning',
     '-ss', s.toFixed(3),
     '-i', inputPath,
     '-t', duration.toFixed(3),
-    '-c:v', 'libx264', '-crf', '0', '-preset', 'fast',
-    '-pix_fmt', 'yuv420p',
+    '-c:v', 'libx264', '-crf', '0', '-preset', 'slow',
+    '-pix_fmt', 'yuv444p',
     '-c:a', 'aac',
     '-movflags', '+faststart',
     outputPath,
