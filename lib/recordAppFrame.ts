@@ -42,18 +42,23 @@ export async function recordAppFrame(
     const page = await browser.newPage();
     await page.setViewport({ width: 1080, height: 1920, deviceScaleFactor: 1 });
 
-    const templateUrl = 'file://' + path.join(CARD_DIR, templateName);
-    await page.goto(templateUrl, { waitUntil: 'networkidle0' });
+    // Copy ball-trail into the template directory so the page can reference it
+    // via a file:// URL (data: URLs are limited to ~2MB in Chromium, which
+    // breaks on CRF 0 files).
+    const videoFilename = `_bt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}.mp4`;
+    const videoInTemplateDir = path.join(CARD_DIR, videoFilename);
+    await fs.copyFile(ballTrailVideoPath, videoInTemplateDir);
 
-    // Inject the ball-trail video as the <video> source
-    const videoDataUrl = await fs.readFile(ballTrailVideoPath).then((b) =>
-      'data:video/mp4;base64,' + b.toString('base64')
-    );
-    await page.evaluate((src) => {
-      const v = document.getElementById('content') as HTMLVideoElement;
-      v.src = src;
-      v.load();
-    }, videoDataUrl);
+    try {
+      const templateUrl = 'file://' + path.join(CARD_DIR, templateName);
+      await page.goto(templateUrl, { waitUntil: 'networkidle0' });
+
+      // Point the video to the file we just dropped in the template dir
+      await page.evaluate((src) => {
+        const v = document.getElementById('content') as HTMLVideoElement;
+        v.src = src;
+        v.load();
+      }, videoFilename);
 
     // Wait for video to be decoding
     const status = await page.evaluate(async () => {
@@ -112,6 +117,9 @@ export async function recordAppFrame(
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
     await execFileP('rm', ['-f', rawPath]);
+    } finally {
+      await fs.unlink(videoInTemplateDir).catch(() => {});
+    }
   } finally {
     await browser.close();
   }
