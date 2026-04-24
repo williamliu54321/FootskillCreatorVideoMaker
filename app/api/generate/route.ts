@@ -46,11 +46,10 @@ export async function POST(req: NextRequest) {
     await fs.writeFile(ballTrailPath, ballTrailBuf);
     console.log(`[${jobId}] got ball-trail clip (${ballTrailBuf.length} bytes)`);
 
-    console.log(`[${jobId}] overlaying app UI + recording card...`);
-    await Promise.all([
-      recordAppFrame(ballTrailPath, ballTrailFramedPath, 4.0),
-      recordCard(cardPath),
-    ]);
+    console.log(`[${jobId}] overlaying app UI...`);
+    await recordAppFrame(ballTrailPath, ballTrailFramedPath, 4.0);
+    console.log(`[${jobId}] recording card...`);
+    await recordCard(cardPath);
 
     console.log(`[${jobId}] stitching...`);
     await stitchClips([ballTrailFramedPath, cardPath], finalPath);

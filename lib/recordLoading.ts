@@ -19,6 +19,12 @@ export async function recordLoading(outputPath: string): Promise<void> {
       '--autoplay-policy=no-user-gesture-required',
       '--force-device-scale-factor=1',
       '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--disable-software-rasterizer',
+      '--no-zygote',
+      '--single-process',
     ],
   } as any);
 
