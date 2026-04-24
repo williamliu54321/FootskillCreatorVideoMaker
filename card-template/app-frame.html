@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>FootSkill AI — App Overlay</title>
+<title>FootSkill AI — App Overlay (PNG)</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
 
@@ -10,89 +10,16 @@
 
   html, body {
     width: 1080px; height: 1920px;
-    background: #000;
+    background: transparent;
     color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
     overflow: hidden;
   }
 
-  /* Full-bleed video layer — keeps the ball-trail clip at native 1080x1920 */
-  #content {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    z-index: 1;
-  }
-
-  /* Subtle gradient vignette so overlay UI stays readable over any footage */
-  .vignette {
-    position: absolute; inset: 0; z-index: 2; pointer-events: none;
-    background:
-      linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.55) 100%);
-  }
-
-  @keyframes fsRecPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50%      { opacity: 0.6; transform: scale(0.85); }
-  }
-  @keyframes fsScanSweep {
-    0%   { top: 0; opacity: 0; }
-    15%  { opacity: 1; }
-    85%  { opacity: 1; }
-    100% { top: 100%; opacity: 0; }
-  }
-  @keyframes fsDotSpin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
-  @keyframes fsCornerPulse {
-    0%, 100% { opacity: 0.9; filter: drop-shadow(0 0 6px #00d4ff); }
-    50%      { opacity: 1;   filter: drop-shadow(0 0 14px #00d4ff); }
-  }
-
-  /* ========= STATUS BAR ========= */
-  .status-bar {
-    position: absolute; top: 0; left: 0; right: 0; height: 100px;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 60px; font-size: 40px; font-weight: 600; letter-spacing: 0.5px;
-    z-index: 20; color: #fff;
-    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
-  }
-  .status-icons { display: flex; align-items: center; gap: 14px; }
-
-  .battery {
-    width: 66px; height: 28px; border: 2px solid #fff; border-radius: 6px;
-    position: relative; padding: 2px;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));
-  }
-  .battery-fill { background: #fff; width: 85%; height: 100%; border-radius: 3px; }
-  .battery-tip {
-    position: absolute; right: -6px; top: 8px; width: 4px; height: 8px;
-    background: #fff; border-radius: 2px;
-  }
-
-  /* ========= HEADER (REC pill + brand + help) ========= */
   .header {
     position: absolute; top: 80px; left: 0; right: 0; height: 110px;
     display: flex; align-items: center; justify-content: center;
-    padding: 0 50px; z-index: 20;
-  }
-
-  .rec-pill {
-    display: flex; align-items: center; gap: 14px;
-    padding: 14px 28px;
-    background: rgba(255,50,50,0.22);
-    border: 2px solid rgba(255,80,80,0.85);
-    border-radius: 40px;
-    box-shadow: 0 0 24px rgba(255,50,50,0.4), 0 2px 10px rgba(0,0,0,0.4);
-    backdrop-filter: blur(8px);
-  }
-  .rec-dot {
-    width: 18px; height: 18px; border-radius: 50%; background: #ff3030;
-    animation: fsRecPulse 1s ease-in-out infinite;
-    box-shadow: 0 0 12px #ff3030;
-  }
-  .rec-time {
-    font-family: 'Orbitron', monospace;
-    font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #fff;
+    padding: 0 50px;
   }
 
   .brand-pill {
@@ -101,7 +28,6 @@
     background: rgba(0,20,40,0.75);
     border: 1.5px solid rgba(0,136,255,0.5);
     border-radius: 50px;
-    backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0,0,0,0.4);
   }
   .brand-diamond {
@@ -118,30 +44,6 @@
     background-clip: text;
   }
 
-
-  /* ========= FRAME OVERLAY (drawn on top of the HD video) ========= */
-  .frame-overlay {
-    position: absolute;
-    top: 260px; left: 40px; right: 40px; bottom: 260px;
-    border-radius: 30px;
-    border: 3px solid rgba(0,136,255,0.5);
-    animation: fsBorderGlow 2s ease-in-out infinite;
-    pointer-events: none;
-    z-index: 14;
-  }
-
-  /* ========= CORNER BRACKETS (inside the frame) ========= */
-  .corner {
-    position: absolute; width: 40px; height: 40px;
-    z-index: 18;
-    box-shadow: 0 0 8px rgba(0,212,255,0.5);
-  }
-  .corner.tl { top: 280px; left: 60px;  border-top: 3px solid #00d4ff; border-left: 3px solid #00d4ff; }
-  .corner.tr { top: 280px; right: 60px; border-top: 3px solid #00d4ff; border-right: 3px solid #00d4ff; }
-  .corner.bl { bottom: 300px; left: 60px;  border-bottom: 3px solid #00d4ff; border-left: 3px solid #00d4ff; }
-  .corner.br { bottom: 300px; right: 60px; border-bottom: 3px solid #00d4ff; border-right: 3px solid #00d4ff; }
-
-  /* ========= ANALYZE BAR (bottom) ========= */
   .analyze-bar {
     position: absolute; left: 60px; right: 60px; bottom: 90px;
     padding: 28px 40px;
@@ -150,15 +52,12 @@
     border-radius: 60px;
     display: flex; align-items: center; justify-content: center; gap: 20px;
     box-shadow: 0 0 30px rgba(0,136,255,0.3), 0 4px 16px rgba(0,0,0,0.5);
-    backdrop-filter: blur(10px);
-    z-index: 20;
   }
   .spin-dot {
     width: 30px; height: 30px;
     border: 3px solid rgba(0,212,255,0.2);
     border-top-color: #00d4ff;
     border-radius: 50%;
-    animation: fsDotSpin 1s linear infinite;
     box-shadow: 0 0 10px rgba(0,212,255,0.5);
   }
   .analyze-text {
@@ -168,22 +67,9 @@
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
-  .home-indicator {
-    position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
-    width: 280px; height: 8px; border-radius: 4px;
-    background: rgba(255,255,255,0.45);
-    z-index: 20;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-  }
 </style>
 </head>
 <body>
-  <!-- Full-bleed HD video layer -->
-  <video id="content" autoplay muted playsinline></video>
-  <div class="vignette"></div>
-
-  <!-- Brand pill (top) -->
   <div class="header">
     <div class="brand-pill">
       <div class="brand-diamond"></div>
@@ -191,7 +77,6 @@
     </div>
   </div>
 
-  <!-- Bottom analyze bar -->
   <div class="analyze-bar">
     <div class="spin-dot"></div>
     <span class="analyze-text">ANALYZING</span>
