@@ -1,9 +1,19 @@
-import { execFile } from 'child_process';
-import { promisify } from 'util';
-
-const execFileP = promisify(execFile);
+import { spawn } from 'child_process';
 
 const MAX_DURATION = 4.0;
+
+function runFfmpeg(args: string[]): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const proc = spawn('ffmpeg', args);
+    let stderr = '';
+    proc.stderr.on('data', (d) => { stderr += d.toString(); });
+    proc.on('error', reject);
+    proc.on('close', (code) => {
+      if (code === 0) resolve();
+      else reject(new Error(`ffmpeg exited ${code}\n${stderr.slice(-4000)}`));
+    });
+  });
+}
 
 /**
  * Trim a video file to [start, end] using ffmpeg stream copy (no re-encode).
@@ -17,7 +27,7 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
   // Re-encode on trim so the output is always clean H.264 regardless of
   // input codec/container. Avoids stream-copy artifacts like missing
   // keyframes that break downstream decoders (Modal/SAM 3).
-  await execFileP('ffmpeg', [
+  await runFfmpeg([
     '-y', '-loglevel', 'warning',
     '-ss', s.toFixed(3),
     '-i', inputPath,
@@ -27,5 +37,5 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
     '-c:a', 'aac',
     '-movflags', '+faststart',
     outputPath,
-  ], { maxBuffer: 50 * 1024 * 1024 });
+  ]);
 }
