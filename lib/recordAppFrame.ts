@@ -99,12 +99,12 @@ export async function recordAppFrame(
 
     // Trim to exact duration, re-encode for consistency
     await execFileP('ffmpeg', [
-      '-y', '-i', rawPath,
+      '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', clipDuration.toFixed(3),
       '-c:v', 'libx264', '-crf', '0', '-preset', 'slow',
       '-pix_fmt', 'yuv420p', '-r', '60',
       outputPath,
-    ]);
+    ], { maxBuffer: 50 * 1024 * 1024 });
     await execFileP('rm', ['-f', rawPath]);
   } finally {
     await browser.close();

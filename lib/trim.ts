@@ -18,7 +18,7 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
   // input codec/container. Avoids stream-copy artifacts like missing
   // keyframes that break downstream decoders (Modal/SAM 3).
   await execFileP('ffmpeg', [
-    '-y',
+    '-y', '-loglevel', 'error',
     '-ss', s.toFixed(3),
     '-i', inputPath,
     '-t', duration.toFixed(3),
@@ -27,5 +27,5 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
     '-c:a', 'aac',
     '-movflags', '+faststart',
     outputPath,
-  ]);
+  ], { maxBuffer: 50 * 1024 * 1024 });
 }

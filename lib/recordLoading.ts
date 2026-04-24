@@ -62,12 +62,12 @@ export async function recordLoading(outputPath: string): Promise<void> {
     await recorder.stop();
 
     await execFileP('ffmpeg', [
-      '-y', '-i', rawPath,
+      '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', '0.5',
       '-c:v', 'libx264', '-crf', '18', '-preset', 'fast',
       '-pix_fmt', 'yuv420p', '-r', '60',
       outputPath,
-    ]);
+    ], { maxBuffer: 50 * 1024 * 1024 });
     await execFileP('rm', ['-f', rawPath]);
   } finally {
     await browser.close();
