@@ -1,8 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    serverComponentsExternalPackages: ['puppeteer-core', 'puppeteer-screen-recorder'],
-  },
-};
+const nextConfig = {};
 
 module.exports = nextConfig;
