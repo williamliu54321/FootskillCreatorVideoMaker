@@ -127,7 +127,7 @@ export async function recordCard(outputPath: string): Promise<void> {
     await execFileP('ffmpeg', [
       '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', '2.25',
-      '-c:v', 'libx264', '-crf', '14', '-preset', 'fast',
+      '-c:v', 'libx264', '-crf', '0', '-preset', 'ultrafast',
       '-pix_fmt', 'yuv420p', '-r', '60',
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
