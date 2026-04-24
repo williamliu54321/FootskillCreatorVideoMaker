@@ -32,7 +32,7 @@ export async function trimVideo(inputPath: string, outputPath: string, start: nu
     '-ss', s.toFixed(3),
     '-i', inputPath,
     '-t', duration.toFixed(3),
-    '-c:v', 'libx264', '-crf', '0', '-preset', 'ultrafast',
+    '-c:v', 'libx264', '-crf', '14', '-preset', 'slow',
     '-pix_fmt', 'yuv420p',
     '-c:a', 'aac',
     '-movflags', '+faststart',

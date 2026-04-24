@@ -30,7 +30,7 @@ export async function stitchClips(inputs: string[], outputPath: string): Promise
   args.push(
     '-filter_complex', filterComplex,
     '-map', '[outv]',
-    '-c:v', 'libx264', '-crf', '0', '-preset', 'ultrafast',
+    '-c:v', 'libx264', '-crf', '14', '-preset', 'slow',
     '-pix_fmt', 'yuv420p', '-r', '60',
     outputPath,
   );
