@@ -101,7 +101,7 @@ export async function recordAppFrame(
     await execFileP('ffmpeg', [
       '-y', '-loglevel', 'error', '-i', rawPath,
       '-t', clipDuration.toFixed(3),
-      '-c:v', 'libx264', '-crf', '0', '-preset', 'slow',
+      '-c:v', 'libx264', '-crf', '0', '-preset', 'ultrafast',
       '-pix_fmt', 'yuv444p', '-r', '60',
       outputPath,
     ], { maxBuffer: 50 * 1024 * 1024 });
